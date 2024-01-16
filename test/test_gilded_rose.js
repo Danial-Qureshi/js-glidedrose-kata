@@ -1,35 +1,26 @@
 var { expect } = require("chai");
 var { Shop, Item } = require("../src/gilded_rose.js");
+
+const tests = require("../test.json");
+
 describe("Gilded Rose", function () {
-  it("should foo", function () {
-    const names = [
-      "Aged Brie",
-      "Backstage passes to a TAFKAL80ETC concert",
-      "Sulfuras, Hand of Ragnaros",
-      "normal item",
-    ];
+  for (const test of tests) {
+    const [name, sellIn, quality, outputSellIn, outputQuality] = test;
 
-    const tests = [];
+    const description = {
+      name,
+      sellIn,
+      quality,
+      outputSellIn,
+      outputQuality,
+    };
 
-    const [minSellIn, maxSellIn] = [-1, 12];
-    const [minQuality, maxQuality] = [-1, 51];
+    it(JSON.stringify(description), () => {
+      const gildedRose = new Shop([new Item(name, sellIn, quality)]);
+      const items = gildedRose.updateQuality();
 
-    for (const name of names) {
-      for (let sellIn = minSellIn; sellIn <= maxSellIn; sellIn++) {
-        for (let quality = minQuality; quality <= maxQuality; quality++) {
-          const gildedRose = new Shop([new Item(name, sellIn, quality)]);
-          const items = gildedRose.updateQuality();
-
-          const outputSellIn = items[0].sellIn;
-          const outputQuality = items[0].quality;
-
-          tests.push([name, sellIn, quality, outputSellIn, outputQuality]);
-        }
-      }
-    }
-
-    console.log(JSON.stringify(tests));
-
-    console.log(tests.length);
-  });
+      expect(items[0].sellIn).to.equal(outputSellIn);
+      expect(items[0].quality).to.equal(outputQuality);
+    });
+  }
 });
