@@ -10,6 +10,7 @@ const ItemTypes = {
   AGED: "Aged Brie",
   PASS: "Backstage passes to a TAFKAL80ETC concert",
   THOR: "Sulfuras, Hand of Ragnaros",
+  NUN: "Conjured, The Nun",
 };
 
 function updateAged(item) {
@@ -46,6 +47,16 @@ function updatePass(item) {
 
 function updateThor(item) {}
 
+function updateNun(item) {
+  if (item.quality > 0) {
+    item.quality = item.quality - 2;
+  }
+  item.sellIn = item.sellIn - 1;
+  if (item.sellIn < 0 && item.quality > 0) {
+    item.quality = item.quality - 1;
+  }
+}
+
 function updateNormal(item) {
   if (item.quality > 0) {
     item.quality = item.quality - 1;
@@ -71,6 +82,9 @@ class Shop {
           continue;
         case ItemTypes.THOR:
           updateThor(item);
+          continue;
+        case ItemTypes.NUN:
+          updateNun(item);
           continue;
         default:
           updateNormal(item);
