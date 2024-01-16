@@ -11,7 +11,7 @@ class Shop {
     this.items = items;
   }
   updateQuality() {
-    for (const item of items) {
+    for (const item of this.items) {
       if (
         item.name != "Aged Brie" &&
         item.name != "Backstage passes to a TAFKAL80ETC concert"
